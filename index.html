@@ -3,26 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WashFlow Pro — Laundry Operations & POS</title>
+    <title>WashFlow All-in-One Laundry Manager</title>
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #3730a3;
-            --primary-light: #e0e7ff;
-            --accent: #06b6d4;
-            --success: #059669;
-            --success-light: #d1fae5;
-            --warning: #d97706;
-            --warning-light: #fef3c7;
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --accent: #0ea5e9;
+            --success: #16a34a;
+            --warning: #ca8a04;
             --danger: #dc2626;
-            --danger-light: #fee2e2;
             --bg: #f8fafc;
             --surface: #ffffff;
             --text: #0f172a;
             --muted: #64748b;
             --border: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -35,148 +29,90 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            padding-bottom: 90px;
-            -webkit-font-smoothing: antialiased;
+            padding-bottom: 80px;
         }
 
         header {
-            background: linear-gradient(135deg, #1e1b4b, #312e81, #4338ca);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 28px 16px 36px 16px;
+            padding: 16px;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(49, 46, 129, 0.2);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
-        /* Vector Header Glow Effect */
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .brand-container {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 4px;
-        }
-
-        .brand-logo-svg {
-            width: 38px;
-            height: 38px;
-            filter: drop-shadow(0 2px 6px rgba(6, 182, 212, 0.4));
-        }
-
-        .brand-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .brand-badge {
-            background: linear-gradient(135deg, var(--accent), #3b82f6);
-            color: #ffffff;
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 6px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+        header h1 {
+            font-size: 1.25rem;
+            margin-bottom: 2px;
         }
 
         header p {
-            font-size: 0.85rem;
-            opacity: 0.85;
-            font-weight: 400;
-            color: #c7d2fe;
+            font-size: 0.8rem;
+            opacity: 0.9;
         }
 
         .container {
-            max-width: 680px;
-            margin: -20px auto 0 auto;
-            padding: 0 16px;
-            position: relative;
-            z-index: 10;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 16px;
         }
 
-        /* Metrics Dashboard Grid */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .metric-card {
             background: var(--surface);
-            padding: 16px;
-            border-radius: var(--radius);
+            padding: 12px;
+            border-radius: 10px;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            transition: transform 0.2s;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
         .metric-card h3 {
             font-size: 0.7rem;
             color: var(--muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 700;
-            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
         .metric-card .val {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: var(--primary);
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--primary-dark);
         }
 
-        /* Navigation Tabs */
         .nav-tabs {
             display: flex;
             background: var(--surface);
-            border-radius: var(--radius);
-            padding: 6px;
+            border-radius: 10px;
+            padding: 4px;
             border: 1px solid var(--border);
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            gap: 4px;
+            margin-bottom: 16px;
+            overflow-x: auto;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 10px 6px;
+            padding: 10px 8px;
             border: none;
             background: none;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 0.8rem;
             color: var(--muted);
             cursor: pointer;
             border-radius: 8px;
             white-space: nowrap;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
 
         .tab-btn.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
         }
 
         .tab-content {
@@ -185,69 +121,50 @@
 
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Cards & Forms */
         .card {
             background: var(--surface);
-            padding: 20px;
-            border-radius: var(--radius);
+            padding: 16px;
+            border-radius: 10px;
             border: 1px solid var(--border);
             margin-bottom: 16px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
         .card h2 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 16px;
+            font-size: 1rem;
+            margin-bottom: 12px;
             color: var(--text);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
         }
 
         .form-group {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
             display: block;
             font-size: 0.8rem;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 6px;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
 
         .form-control {
             width: 100%;
-            padding: 11px 14px;
+            padding: 10px;
             border: 1px solid var(--border);
             border-radius: 8px;
-            font-size: 0.925rem;
+            font-size: 0.9rem;
             background: #fff;
-            color: var(--text);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
         }
 
         .row-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .btn {
@@ -255,145 +172,127 @@
             padding: 12px;
             border: none;
             border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.925rem;
+            font-weight: bold;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            transition: background 0.2s;
         }
 
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2); }
+        .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); }
-        .btn-success { background: var(--success); color: white; box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2); }
-        .btn-success:hover { background: #047857; }
+        .btn-success { background: var(--success); color: white; }
         .btn-warning { background: var(--warning); color: white; }
-        .btn-warning:hover { background: #b45309; }
         .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #b91c1c; }
 
-        /* Order Lists & Items */
         .order-item, .inventory-item {
-            background: #fafafa;
-            padding: 16px;
-            border-radius: 10px;
+            background: var(--surface);
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid var(--border);
-            margin-bottom: 10px;
-            transition: border-color 0.2s;
-        }
-
-        .order-item:hover {
-            border-color: #cbd5e1;
+            margin-bottom: 8px;
         }
 
         .machine-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
             margin-top: 10px;
         }
 
         .machine-box {
-            background: #f8fafc;
+            background: #f1f5f9;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
+            border-radius: 8px;
+            padding: 12px;
             text-align: center;
-            transition: all 0.2s;
         }
 
         .machine-box.active {
-            background: #eef2ff;
+            background: #e0f2fe;
             border-color: var(--primary);
-            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.1);
         }
 
-        /* Badges */
         .badge {
             display: inline-block;
             padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 800;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
-        .badge-pending { background: var(--warning-light); color: #92400e; }
-        .badge-washing { background: var(--primary-light); color: var(--primary-dark); }
-        .badge-drying { background: #f3e8ff; color: #6b21a8; }
-        .badge-readyforpickup { background: var(--success-light); color: #065f46; }
-        .badge-completed { background: #f1f5f9; color: #334155; }
+        .badge-pending { background: #fef3c7; color: #b45309; }
+        .badge-washing { background: #e0f2fe; color: #0369a1; }
+        .badge-drying { background: #fae8ff; color: #86198f; }
+        .badge-readyforpickup { background: #dcfce7; color: #15803d; }
+        .badge-completed { background: #f1f5f9; color: #475569; }
 
         .action-group {
             display: flex;
             gap: 6px;
-            margin-top: 12px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
 
         .btn-sm {
-            padding: 7px 12px;
-            font-size: 0.75rem;
+            padding: 8px 12px;
+            font-size: 0.8rem;
             border-radius: 6px;
             border: none;
             cursor: pointer;
-            font-weight: 700;
-            transition: filter 0.2s;
+            font-weight: bold;
         }
-        .btn-sm:hover { filter: brightness(0.95); }
 
         /* Modal Overlay */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
             display: none;
-            justify-content: center;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            z-index: 999;
             align-items: center;
-            z-index: 100;
+            justify-content: center;
             padding: 16px;
         }
-
+        .modal-overlay.active {
+            display: flex;
+        }
         .modal-card {
             background: var(--surface);
+            border-radius: 12px;
+            padding: 20px;
             width: 100%;
             max-width: 420px;
-            border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            animation: scaleUp 0.25s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
-
-        @keyframes scaleUp {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .modal-btn {
+            padding: 12px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-btn:hover:not(:disabled) {
+            background: #e0f2fe;
+            border-color: var(--primary);
+        }
+        .modal-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand-container">
-            <!-- Vector Logo SVG -->
-            <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="44" stroke="url(#logo_grad)" stroke-width="8" />
-                <path d="M30 55 C 40 40, 60 70, 70 45" stroke="#06b6d4" stroke-width="7" stroke-linecap="round" />
-                <circle cx="38" cy="36" r="4" fill="#60a5fa" />
-                <circle cx="52" cy="30" r="6" fill="#06b6d4" />
-                <path d="M60 55 L75 38 M75 38 L62 38 M75 38 L75 51" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
-                <defs>
-                    <linearGradient id="logo_grad" x1="0" y1="0" x2="100" y2="100">
-                        <stop offset="0%" stop-color="#06b6d4" />
-                        <stop offset="100%" stop-color="#6366f1" />
-                    </linearGradient>
-                </defs>
-            </svg>
-            <div class="brand-title">WashFlow <span class="brand-badge">PRO</span></div>
-        </div>
-        <p>Smart Operations & Management System</p>
+        <h1>WashFlow POS & Operations</h1>
+        <p>Integrated Garment Tracking, Machines & Inventory</p>
     </header>
 
     <div class="container">
@@ -419,7 +318,7 @@
 
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('pos-tab')">POS & Orders</button>
+            <button class="tab-btn active" onclick="switchTab('pos-tab')">+ POS & Orders</button>
             <button class="tab-btn" onclick="switchTab('machine-tab')">Machines</button>
             <button class="tab-btn" onclick="switchTab('inventory-tab')">Supplies</button>
             <button class="tab-btn" onclick="switchTab('history-tab')">History</button>
@@ -428,7 +327,7 @@
         <!-- TAB 1: POS & ORDERS -->
         <div id="pos-tab" class="tab-content active">
             <div class="card">
-                <h2>New Laundry Order</h2>
+                <h2>New Laundry Order (Claim Tag)</h2>
                 <form id="orderForm" onsubmit="handleCreateOrder(event)">
                     <div class="form-group">
                         <label>Customer Full Name</label>
@@ -460,7 +359,7 @@
                     </div>
                     <div class="form-group">
                         <label>Special Notes / Fabric Care</label>
-                        <input type="text" id="specialNotes" class="form-control" placeholder="e.g., Separate whites, delicate items">
+                        <input type="text" id="specialNotes" class="form-control" placeholder="e.g., Separate whites, fragile buttons">
                     </div>
                     <button type="submit" class="btn btn-primary">Generate Claim Tag & Order</button>
                 </form>
@@ -468,7 +367,7 @@
 
             <div class="card">
                 <h2>Active Order Queue</h2>
-                <div class="form-group" style="margin-bottom: 14px;">
+                <div class="form-group">
                     <input type="text" id="searchFilter" class="form-control" placeholder="Search by name or claim tag (#LND-...)" oninput="render()">
                 </div>
                 <div id="orderList"></div>
@@ -478,8 +377,8 @@
         <!-- TAB 2: MACHINE ALLOCATION -->
         <div id="machine-tab" class="tab-content">
             <div class="card">
-                <h2>Washer & Dryer Monitor</h2>
-                <p style="font-size:0.8rem; color:var(--muted); margin-bottom:14px;">Real-time equipment availability and status tracking.</p>
+                <h2>Washer & Dryer Status Monitor</h2>
+                <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">Monitor equipment status across units.</p>
                 <div id="machineGridContainer" class="machine-grid"></div>
             </div>
         </div>
@@ -487,14 +386,14 @@
         <!-- TAB 3: INVENTORY & SUPPLIES -->
         <div id="inventory-tab" class="tab-content">
             <div class="card">
-                <h2>Consumable Supplies Ledger</h2>
-                <p style="font-size:0.8rem; color:var(--muted); margin-bottom:14px;">Auto-deducted per kilogram when washing initiates.</p>
-                <div id="inventoryList" style="display:flex; flex-direction:column; gap:8px;"></div>
+                <h2>Consumable Supplies Stock</h2>
+                <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">Automatically deducted when washing begins.</p>
+                <div id="inventoryList"></div>
             </div>
             <div class="card">
-                <h2>Restock Inventory</h2>
+                <h2>Restock Supplies</h2>
                 <div class="form-group">
-                    <label>Select Item</label>
+                    <label>Select Item to Restock</label>
                     <select id="restockItem" class="form-control">
                         <option value="detergent">Liquid Detergent (ml)</option>
                         <option value="softener">Fabric Softener (ml)</option>
@@ -506,7 +405,7 @@
                     <label>Quantity to Add</label>
                     <input type="number" id="restockQty" class="form-control" placeholder="e.g., 2000">
                 </div>
-                <button class="btn btn-success" onclick="handleRestock()">Confirm Restock</button>
+                <button class="btn btn-success" onclick="handleRestock()">Add Stock</button>
             </div>
         </div>
 
@@ -515,27 +414,38 @@
             <div class="card">
                 <h2>Completed Transactions</h2>
                 <div id="historyList"></div>
-                <button class="btn btn-danger" style="margin-top: 20px;" onclick="resetAllData()">Reset All App Data</button>
+                <button class="btn btn-danger" style="margin-top: 15px;" onclick="resetAllData()">Reset All App Data</button>
             </div>
         </div>
     </div>
 
-    <!-- SMS Alert Modal -->
-    <div id="smsModal" class="modal-overlay">
+    <!-- Machine Assignment Modal -->
+    <div id="assignModal" class="modal-overlay">
         <div class="modal-card">
-            <h2 style="font-size: 1rem; margin-bottom: 12px; border-bottom:none; padding-bottom:0;">Ready Notification SMS</h2>
-            <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 10px;">Copy message to send via Messenger, Viber, or SMS app:</p>
-            <div class="form-group">
-                <textarea id="smsTextContent" class="form-control" rows="4" readonly style="font-size: 0.85rem; background:#f8fafc; resize:none;"></textarea>
-            </div>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn btn-primary" onclick="copySMS()">Copy Message</button>
-                <button class="btn" style="background:#e2e8f0; color:#334155;" onclick="closeSMSModal()">Close</button>
-            </div>
+            <h3>Assign Machine to Order</h3>
+            <p id="modalOrderInfo" style="font-size:0.85rem; color:var(--muted); margin-top:4px;"></p>
+            
+            <h4 style="font-size:0.85rem; margin-top:12px;">Available Washers:</h4>
+            <div id="washerPicker" class="modal-grid"></div>
+
+            <button class="btn" style="background:#e2e8f0; color:#334155; margin-top:10px;" onclick="closeAssignModal()">Cancel</button>
         </div>
     </div>
 
     <script>
+        // Default Machine Initialization
+        const defaultMachines = [
+            { id: 'W1', type: 'Washer', status: 'Idle', assignedTo: null },
+            { id: 'W2', type: 'Washer', status: 'Idle', assignedTo: null },
+            { id: 'W3', type: 'Washer', status: 'Idle', assignedTo: null },
+            { id: 'W4', type: 'Washer', status: 'Idle', assignedTo: null },
+            { id: 'D1', type: 'Dryer', status: 'Idle', assignedTo: null },
+            { id: 'D2', type: 'Dryer', status: 'Idle', assignedTo: null },
+            { id: 'D3', type: 'Dryer', status: 'Idle', assignedTo: null },
+            { id: 'D4', type: 'Dryer', status: 'Idle', assignedTo: null }
+        ];
+
+        // Load Database
         let db = {
             orders: JSON.parse(localStorage.getItem('washflow_orders')) || [],
             inventory: JSON.parse(localStorage.getItem('washflow_inventory')) || {
@@ -544,17 +454,10 @@
                 bleach: 2000,
                 bags: 100
             },
-            machines: JSON.parse(localStorage.getItem('washflow_machines')) || [
-                { id: 'W1', type: 'Washer', status: 'Idle', assignedTo: null },
-                { id: 'W2', type: 'Washer', status: 'Idle', assignedTo: null },
-                { id: 'W3', type: 'Washer', status: 'Idle', assignedTo: null },
-                { id: 'W4', type: 'Washer', status: 'Idle', assignedTo: null },
-                { id: 'D1', type: 'Dryer', status: 'Idle', assignedTo: null },
-                { id: 'D2', type: 'Dryer', status: 'Idle', assignedTo: null },
-                { id: 'D3', type: 'Dryer', status: 'Idle', assignedTo: null },
-                { id: 'D4', type: 'Dryer', status: 'Idle', assignedTo: null }
-            ]
+            machines: JSON.parse(localStorage.getItem('washflow_machines')) || defaultMachines
         };
+
+        let selectedOrderForAssignment = null;
 
         function saveData() {
             localStorage.setItem('washflow_orders', JSON.stringify(db.orders));
@@ -564,10 +467,8 @@
         }
 
         function resetAllData() {
-            if (confirm("Are you sure you want to clear all data and reset the system?")) {
-                localStorage.clear();
-                location.reload();
-            }
+            localStorage.clear();
+            location.reload();
         }
 
         function switchTab(tabId) {
@@ -612,104 +513,123 @@
             document.getElementById('orderForm').reset();
             calculateTotal();
             saveData();
-            alert(`Order Created Successfully! Claim Tag: ${newOrder.id}`);
         }
 
-        function startWash(orderId) {
-            const index = db.orders.findIndex(o => o.id === orderId);
-            if (index === -1) return;
+        // Action Handlers for State Progression
+        function startWashDirectly(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
 
-            db.orders[index].status = 'Washing';
-            const weight = db.orders[index].weight || 1;
+            order.status = 'Washing';
+
+            // Auto-deduct inventory
+            const weight = order.weight || 1;
             db.inventory.detergent = Math.max(0, db.inventory.detergent - (weight * 50));
             db.inventory.softener = Math.max(0, db.inventory.softener - (weight * 30));
+
             saveData();
         }
 
         function moveToDryer(orderId) {
-            const index = db.orders.findIndex(o => o.id === orderId);
-            if (index === -1) return;
-            db.orders[index].status = 'Drying';
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            order.status = 'Drying';
             saveData();
         }
 
         function markReady(orderId) {
-            const index = db.orders.findIndex(o => o.id === orderId);
-            if (index === -1) return;
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
 
-            db.orders[index].status = 'Ready for Pickup';
+            order.status = 'Ready for Pickup';
+
+            // Release assigned washer/dryer
             db.machines.forEach(m => {
                 if (m.assignedTo === orderId) {
                     m.status = 'Idle';
                     m.assignedTo = null;
                 }
             });
+
             saveData();
         }
 
         function markCompleted(orderId) {
-            const index = db.orders.findIndex(o => o.id === orderId);
-            if (index === -1) return;
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
 
-            db.orders[index].status = 'Completed';
+            order.status = 'Completed';
+
             db.machines.forEach(m => {
                 if (m.assignedTo === orderId) {
                     m.status = 'Idle';
                     m.assignedTo = null;
                 }
             });
+
             saveData();
         }
 
-        function assignMachineModal(orderId) {
-            const idleWashers = db.machines.filter(m => m.status === 'Idle' && m.type === 'Washer');
-            if (idleWashers.length === 0) {
-                alert('No idle washers available right now!');
-                return;
-            }
+        // Built-in Modal Machine Assignment
+        function openAssignModal(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
 
-            const mId = prompt(`Assign Washer ID (${idleWashers.map(m => m.id).join(', ')}):`);
-            if (!mId) return;
+            selectedOrderForAssignment = orderId;
+            document.getElementById('modalOrderInfo').innerText = `Order: ${order.id} (${order.name})`;
 
-            const machine = db.machines.find(m => m.id.toUpperCase() === mId.toUpperCase() && m.status === 'Idle');
-            if (machine) {
+            const washerContainer = document.getElementById('washerPicker');
+            washerContainer.innerHTML = '';
+
+            const washers = db.machines.filter(m => m.type === 'Washer');
+            washers.forEach(w => {
+                const isAvailable = w.status === 'Idle';
+                washerContainer.innerHTML += `
+                    <button class="modal-btn" ${!isAvailable ? 'disabled' : ''} onclick="confirmMachineAssignment('${w.id}')">
+                        ${w.id} ${isAvailable ? '(Free)' : '(Busy)'}
+                    </button>
+                `;
+            });
+
+            document.getElementById('assignModal').classList.add('active');
+        }
+
+        function closeAssignModal() {
+            document.getElementById('assignModal').classList.remove('active');
+            selectedOrderForAssignment = null;
+        }
+
+        function confirmMachineAssignment(machineId) {
+            if (!selectedOrderForAssignment) return;
+
+            const order = db.orders.find(o => o.id === selectedOrderForAssignment);
+            const machine = db.machines.find(m => m.id === machineId);
+
+            if (order && machine) {
                 machine.status = 'In Use';
-                machine.assignedTo = orderId;
+                machine.assignedTo = order.id;
 
-                const index = db.orders.findIndex(o => o.id === orderId);
-                if (index !== -1) {
-                    db.orders[index].machineId = machine.id;
-                    db.orders[index].status = 'Washing';
-                    const weight = db.orders[index].weight || 1;
-                    db.inventory.detergent = Math.max(0, db.inventory.detergent - (weight * 50));
-                    db.inventory.softener = Math.max(0, db.inventory.softener - (weight * 30));
-                }
+                order.machineId = machine.id;
+                order.status = 'Washing'; // Automatically transition to Washing
+
+                // Deduct supplies
+                const weight = order.weight || 1;
+                db.inventory.detergent = Math.max(0, db.inventory.detergent - (weight * 50));
+                db.inventory.softener = Math.max(0, db.inventory.softener - (weight * 30));
+
+                closeAssignModal();
                 saveData();
-            } else {
-                alert('Invalid or busy machine ID.');
             }
         }
 
-        function sendSMSModal(phone, name, id, price) {
+        function sendSMSReminder(phone, name, id, price) {
             if (!phone) {
-                alert('No phone number recorded for this order.');
+                alert('No phone number entered for this order.');
                 return;
             }
             const msg = `Hi ${name}, your laundry (${id}) is ready for pickup! Total balance is ₱${price.toFixed(2)}. Thank you!`;
-            document.getElementById('smsTextContent').value = msg;
-            document.getElementById('smsModal').style.display = 'flex';
-        }
-
-        function closeSMSModal() {
-            document.getElementById('smsModal').style.display = 'none';
-        }
-
-        function copySMS() {
-            const text = document.getElementById('smsTextContent');
-            text.select();
-            navigator.clipboard.writeText(text.value);
-            alert('SMS message copied to clipboard!');
-            closeSMSModal();
+            window.open(`sms:${phone}?body=${encodeURIComponent(msg)}`);
         }
 
         function handleRestock() {
@@ -719,7 +639,6 @@
                 db.inventory[item] = (db.inventory[item] || 0) + qty;
                 document.getElementById('restockQty').value = '';
                 saveData();
-                alert('Inventory restocked successfully!');
             }
         }
 
@@ -745,25 +664,27 @@
             
             const activeOrders = db.orders.filter(o => o.status !== 'Completed');
             if (activeOrders.length === 0) {
-                orderList.innerHTML = '<p style="text-align:center; color:var(--muted); padding:20px; font-size:0.85rem;">No active orders in queue.</p>';
+                orderList.innerHTML = '<p style="text-align:center; color:var(--muted); padding:15px;">No active orders in queue.</p>';
             } else {
                 activeOrders.filter(o => o.name.toLowerCase().includes(filter) || o.id.toLowerCase().includes(filter)).forEach(o => {
                     const statusTag = o.status.replace(/\s+/g, '').toLowerCase();
                     orderList.innerHTML += `
                         <div class="order-item">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                                <h4 style="font-size:0.95rem; font-weight:700;"><b>${o.id}</b> — ${o.name}</h4>
-                                <span class="badge badge-${statusTag}">${o.status}</span>
-                            </div>
-                            <p style="font-size:0.8rem; color:var(--muted); margin-bottom:4px;">${o.service} (${o.weight}kg) • ₱${o.price.toFixed(2)} ${o.machineId ? '• Unit: ' + o.machineId : ''}</p>
-                            ${o.notes ? '<p style="font-size:0.75rem; color:var(--danger); font-weight:600;">Note: ' + o.notes + '</p>' : ''}
-                            <div class="action-group">
-                                ${o.status === 'Pending' ? `<button class="btn-sm btn-primary" onclick="startWash('\${o.id}')">Start Wash</button>` : ''}
-                                ${!o.machineId ? `<button class="btn-sm btn-warning" onclick="assignMachineModal('\${o.id}')">Assign Machine</button>` : ''}
-                                ${o.status === 'Washing' ? `<button class="btn-sm btn-primary" onclick="moveToDryer('\${o.id}')">Move to Dryer</button>` : ''}
-                                ${o.status === 'Drying' ? `<button class="btn-sm btn-primary" onclick="markReady('\${o.id}')">Mark Ready</button>` : ''}
-                                ${o.status === 'Ready for Pickup' ? `<button class="btn-sm btn-success" onclick="markCompleted('\${o.id}')">Complete & Pay</button>` : ''}
-                                <button class="btn-sm" style="background:#e0e7ff; color:var(--primary-dark);" onclick="sendSMSModal('${o.phone}', '${o.name}', '${o.id}', ${o.price})">SMS Alert</button>
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                    <h4><b>${o.id}</b> - ${o.name}</h4>
+                                    <span class="badge badge-${statusTag}">${o.status}</span>
+                                </div>
+                                <p style="font-size:0.75rem; color:var(--muted);">${o.service} (${o.weight}kg) • ₱${o.price.toFixed(2)} ${o.machineId ? '• Machine: ' + o.machineId : ''}</p>
+                                ${o.notes ? '<p style="font-size:0.7rem; color:var(--danger); margin-top:2px;">Note: ' + o.notes + '</p>' : ''}
+                                <div class="action-group">
+                                    ${o.status === 'Pending' ? `<button class="btn-sm btn-primary" onclick="startWashDirectly('${o.id}')">Start Wash</button>` : ''}
+                                    ${o.status === 'Pending' ? `<button class="btn-sm btn-warning" onclick="openAssignModal('${o.id}')">Assign Machine</button>` : ''}
+                                    ${o.status === 'Washing' ? `<button class="btn-sm btn-primary" onclick="moveToDryer('${o.id}')">Move to Dryer</button>` : ''}
+                                    ${o.status === 'Drying' ? `<button class="btn-sm btn-primary" onclick="markReady('${o.id}')">Mark Ready</button>` : ''}
+                                    ${o.status === 'Ready for Pickup' ? `<button class="btn-sm btn-success" onclick="markCompleted('${o.id}')">Complete & Pay</button>` : ''}
+                                    <button class="btn-sm" style="background:#e0f2fe; color:#0369a1;" onclick="sendSMSReminder('${o.phone}', '${o.name}', '${o.id}', ${o.price})">SMS Alert</button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -776,9 +697,9 @@
             db.machines.forEach(m => {
                 machineGrid.innerHTML += `
                     <div class="machine-box ${m.status === 'In Use' ? 'active' : ''}">
-                        <h4 style="font-size:0.95rem; font-weight:700;">${m.id} (${m.type})</h4>
-                        <p style="font-size:0.75rem; font-weight:800; color:${m.status === 'In Use' ? 'var(--primary)' : 'var(--muted)'}; margin-top:2px;">${m.status}</p>
-                        <p style="font-size:0.75rem; color:var(--muted); margin-top:2px;">${m.assignedTo ? 'Order: ' + m.assignedTo : 'Available'}</p>
+                        <h4 style="font-size:0.9rem;">${m.id} (${m.type})</h4>
+                        <p style="font-size:0.75rem; font-weight:bold; color:${m.status === 'In Use' ? 'var(--primary)' : 'var(--muted)'};">${m.status}</p>
+                        <p style="font-size:0.7rem; color:var(--muted);">${m.assignedTo ? 'Order: ' + m.assignedTo : 'Available'}</p>
                     </div>
                 `;
             });
@@ -786,10 +707,10 @@
             // Render Inventory
             const inventoryList = document.getElementById('inventoryList');
             inventoryList.innerHTML = `
-                <div class="inventory-item" style="display:flex; justify-content:space-between; align-items:center;"><b>Liquid Detergent</b> <span style="font-weight:700; color:var(--primary);">${db.inventory.detergent} ml</span></div>
-                <div class="inventory-item" style="display:flex; justify-content:space-between; align-items:center;"><b>Fabric Softener</b> <span style="font-weight:700; color:var(--primary);">${db.inventory.softener} ml</span></div>
-                <div class="inventory-item" style="display:flex; justify-content:space-between; align-items:center;"><b>Bleach</b> <span style="font-weight:700; color:var(--primary);">${db.inventory.bleach} ml</span></div>
-                <div class="inventory-item" style="display:flex; justify-content:space-between; align-items:center;"><b>Large Plastic Bags</b> <span style="font-weight:700; color:var(--primary);">${db.inventory.bags} pcs</span></div>
+                <div class="inventory-item"><div style="display:flex; justify-content:space-between;"><b>Liquid Detergent</b> <span>${db.inventory.detergent} ml</span></div></div>
+                <div class="inventory-item"><div style="display:flex; justify-content:space-between;"><b>Fabric Softener</b> <span>${db.inventory.softener} ml</span></div></div>
+                <div class="inventory-item"><div style="display:flex; justify-content:space-between;"><b>Bleach</b> <span>${db.inventory.bleach} ml</span></div></div>
+                <div class="inventory-item"><div style="display:flex; justify-content:space-between;"><b>Large Plastic Bags</b> <span>${db.inventory.bags} pcs</span></div></div>
             `;
 
             // Render History
@@ -797,16 +718,18 @@
             historyList.innerHTML = '';
             const completedOrders = db.orders.filter(o => o.status === 'Completed');
             if (completedOrders.length === 0) {
-                historyList.innerHTML = '<p style="text-align:center; color:var(--muted); padding:20px; font-size:0.85rem;">No completed transactions yet.</p>';
+                historyList.innerHTML = '<p style="text-align:center; color:var(--muted); padding:15px;">No completed history yet.</p>';
             } else {
                 completedOrders.slice(0, 10).forEach(o => {
                     historyList.innerHTML += `
-                        <div class="order-item" style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <h4 style="font-size:0.9rem; font-weight:700;"><b>${o.id}</b> — ${o.name}</h4>
-                                <p style="font-size:0.75rem; color:var(--muted);">${o.date} • ₱${o.price.toFixed(2)}</p>
+                        <div class="order-item">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <h4><b>${o.id}</b> - ${o.name}</h4>
+                                    <p style="font-size:0.75rem; color:var(--muted);">${o.date} • ₱${o.price.toFixed(2)}</p>
+                                </div>
+                                <span class="badge badge-completed">Done</span>
                             </div>
-                            <span class="badge badge-completed">Done</span>
                         </div>
                     `;
                 });
