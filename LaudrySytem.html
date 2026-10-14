@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WashFlow All-in-One Laundry Manager</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --accent: #0ea5e9;
+            --success: #16a34a;
+            --warning: #ca8a04;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 80px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            margin-bottom: 2px;
+        }
+
+        header p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .metric-card h3 {
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .metric-card .val {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: var(--surface);
+            border-radius: 10px;
+            padding: 4px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 8px;
+            border: none;
+            background: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--muted);
+            cursor: pointer;
+            border-radius: 8px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .card h2 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: var(--text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: #fff;
+        }
+
+        .row-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+
+        .order-item, .inventory-item {
+            background: var(--surface);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 8px;
+        }
+
+        .machine-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .machine-box {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .machine-box.active {
+            background: #e0f2fe;
+            border-color: var(--primary);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-pending { background: #fef3c7; color: #b45309; }
+        .badge-washing { background: #e0f2fe; color: #0369a1; }
+        .badge-drying { background: #fae8ff; color: #86198f; }
+        .badge-readyforpickup { background: #dcfce7; color: #15803d; }
+        .badge-completed { background: #f1f5f9; color: #475569; }
+
+        .action-group {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 20px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .modal-btn {
+            padding: 12px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-btn:hover:not(:disabled) {
+            background: #e0f2fe;
+            border-color: var(--primary);
+        }
+        .modal-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>WashFlow POS & Operations</h1>
+        <p>Integrated Garment Tracking, Machines & Inventory</p>
+    </header>
+
+    <div class="container">
+        <!-- Live Metrics Dashboard -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>Today's Revenue</h3>
+                <div class="val" id="metricRevenue">₱0.00</div>
+            </div>
+            <div class="metric-card">
+                <h3>Active Orders</h3>
+                <div class="val" id="metricActive">0</div>
+            </div>
+            <div class="metric-card">
+                <h3>Machines In Use</h3>
+                <div class="val" id="metricMachines">0 / 8</div>
+            </div>
+            <div class="metric-card">
+                <h3>Detergent Stock</h3>
+                <div class="val" id="metricDetergent">0 ml</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('pos-tab')">+ POS & Orders</button>
+            <button class="tab-btn" onclick="switchTab('machine-tab')">Machines</button>
+            <button class="tab-btn" onclick="switchTab('inventory-tab')">Supplies</button>
+            <button class="tab-btn" onclick="switchTab('history-tab')">History</button>
+        </div>
+
+        <!-- TAB 1: POS & ORDERS -->
+        <div id="pos-tab" class="tab-content active">
+            <div class="card">
+                <h2>New Laundry Order (Claim Tag)</h2>
+                <form id="orderForm" onsubmit="handleCreateOrder(event)">
+                    <div class="form-group">
+                        <label>Customer Full Name</label>
+                        <input type="text" id="custName" class="form-control" placeholder="e.g., Juan Dela Cruz" required>
+                    </div>
+                    <div class="row-inputs">
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <input type="tel" id="custPhone" class="form-control" placeholder="0917...">
+                        </div>
+                        <div class="form-group">
+                            <label>Weight (kg)</label>
+                            <input type="number" step="0.5" id="weightKg" class="form-control" placeholder="e.g., 7.0" required oninput="calculateTotal()">
+                        </div>
+                    </div>
+                    <div class="row-inputs">
+                        <div class="form-group">
+                            <label>Service Type</label>
+                            <select id="serviceType" class="form-control" onchange="calculateTotal()">
+                                <option value="Wash-Dry-Fold">Wash-Dry-Fold (₱40/kg)</option>
+                                <option value="Wash & Press">Wash & Press (₱65/kg)</option>
+                                <option value="Dry Clean">Dry Clean (₱120/kg)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Price (₱)</label>
+                            <input type="number" step="0.01" id="totalPrice" class="form-control" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Special Notes / Fabric Care</label>
+                        <input type="text" id="specialNotes" class="form-control" placeholder="e.g., Separate whites, fragile buttons">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate Claim Tag & Order</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Active Order Queue</h2>
+                <div class="form-group">
+                    <input type="text" id="searchFilter" class="form-control" placeholder="Search by name or claim tag (#LND-...)" oninput="render()">
+                </div>
+                <div id="orderList"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: MACHINE ALLOCATION -->
+        <div id="machine-tab" class="tab-content">
+            <div class="card">
+                <h2>Washer & Dryer Status Monitor</h2>
+                <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">Monitor equipment status across units.</p>
+                <div id="machineGridContainer" class="machine-grid"></div>
+            </div>
+        </div>
+
+        <!-- TAB 3: INVENTORY & SUPPLIES -->
+        <div id="inventory-tab" class="tab-content">
+            <div class="card">
+                <h2>Consumable Supplies Stock</h2>
+                <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">Automatically deducted when washing begins.</p>
+                <div id="inventoryList"></div>
+            </div>
+            <div class="card">
+                <h2>Restock Supplies</h2>
+                <div class="form-group">
+                    <label>Select Item to Restock</label>
+                    <select id="restockItem" class="form-control">
+                        <option value="detergent">Liquid Detergent (ml)</option>
+                        <option value="softener">Fabric Softener (ml)</option>
+                        <option value="bleach">Bleach (ml)</option>
+                        <option value="bags">Large Plastic Bags (pcs)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity to Add</label>
+                    <input type="number" id="restockQty" class="form-control" placeholder="e.g., 2000">
+                </div>
+                <button class="btn btn-success" onclick="handleRestock()">Add Stock</button>
+            </div>
+        </div>
+
+        <!-- TAB 4: HISTORY -->
+        <div id="history-tab" class="tab-content">
+            <div class="card">
+                <h2>Completed Transactions</h2>
+                <div id="historyList"></div>
+                <button class="btn btn-danger" style="margin-top: 15px;" onclick="resetAllData()">Reset All App Data</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Machine Assignment Modal -->
+    <div id="assignModal" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Assign Machine to Order</h3>
+            <p id="modalOrderInfo" style="font-size:0.85rem; color:var(--muted); margin-top:4px;"></p>
+            
+            <h4 style="font-size:0.85rem; margin-top:12px;">Available Washers:</h4>
+            <div id="washerPicker" class="modal-grid"></div>
+
+            <button class="btn" style="background:#e2e8f0; color:#334155; margin-top:10px;" onclick="closeAssignModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Default Machine Initialization
+        const defaultMachines = [
+            { id: 'W1', type: 'Washer', status: 'Idle', assignedTo: null },
+            { id: 'W2', type: 'Washer', status: 'Idle', assignedTo: null },
+            { id: 'W3', type: 'Washer', status: 'Idle', assignedTo: null },
+            { id: 'W4', type: 'Washer', status: 'Idle', assignedTo: null },
+            { id: 'D1', type: 'Dryer', status: 'Idle', assignedTo: null },
+            { id: 'D2', type: 'Dryer', status: 'Idle', assignedTo: null },
+            { id: 'D3', type: 'Dryer', status: 'Idle', assignedTo: null },
+            { id: 'D4', type: 'Dryer', status: 'Idle', assignedTo: null }
+        ];
+
+        // Load Database
+        let db = {
+            orders: JSON.parse(localStorage.getItem('washflow_orders')) || [],
+            inventory: JSON.parse(localStorage.getItem('washflow_inventory')) || {
+                detergent: 5000,
+                softener: 5000,
+                bleach: 2000,
+                bags: 100
+            },
+            machines: JSON.parse(localStorage.getItem('washflow_machines')) || defaultMachines
+        };
+
+        let selectedOrderForAssignment = null;
+
+        function saveData() {
+            localStorage.setItem('washflow_orders', JSON.stringify(db.orders));
+            localStorage.setItem('washflow_inventory', JSON.stringify(db.inventory));
+            localStorage.setItem('washflow_machines', JSON.stringify(db.machines));
+            render();
+        }
+
+        function resetAllData() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function calculateTotal() {
+            const weight = parseFloat(document.getElementById('weightKg').value) || 0;
+            const service = document.getElementById('serviceType').value;
+            let rate = 40;
+            if (service === 'Wash & Press') rate = 65;
+            if (service === 'Dry Clean') rate = 120;
+            document.getElementById('totalPrice').value = (weight * rate).toFixed(2);
+        }
+
+        function handleCreateOrder(e) {
+            e.preventDefault();
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const weight = parseFloat(document.getElementById('weightKg').value) || 0;
+            const service = document.getElementById('serviceType').value;
+            const price = parseFloat(document.getElementById('totalPrice').value) || 0;
+            const notes = document.getElementById('specialNotes').value.trim();
+
+            const newOrder = {
+                id: 'LND-' + Math.floor(1000 + Math.random() * 9000),
+                date: new Date().toLocaleString(),
+                name,
+                phone,
+                weight,
+                service,
+                price,
+                notes,
+                status: 'Pending',
+                machineId: null
+            };
+
+            db.orders.unshift(newOrder);
+            document.getElementById('orderForm').reset();
+            calculateTotal();
+            saveData();
+        }
+
+        // Action Handlers for State Progression
+        function startWashDirectly(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            order.status = 'Washing';
+
+            // Auto-deduct inventory
+            const weight = order.weight || 1;
+            db.inventory.detergent = Math.max(0, db.inventory.detergent - (weight * 50));
+            db.inventory.softener = Math.max(0, db.inventory.softener - (weight * 30));
+
+            saveData();
+        }
+
+        function moveToDryer(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            order.status = 'Drying';
+            saveData();
+        }
+
+        function markReady(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            order.status = 'Ready for Pickup';
+
+            // Release assigned washer/dryer
+            db.machines.forEach(m => {
+                if (m.assignedTo === orderId) {
+                    m.status = 'Idle';
+                    m.assignedTo = null;
+                }
+            });
+
+            saveData();
+        }
+
+        function markCompleted(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            order.status = 'Completed';
+
+            db.machines.forEach(m => {
+                if (m.assignedTo === orderId) {
+                    m.status = 'Idle';
+                    m.assignedTo = null;
+                }
+            });
+
+            saveData();
+        }
+
+        // Built-in Modal Machine Assignment
+        function openAssignModal(orderId) {
+            const order = db.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            selectedOrderForAssignment = orderId;
+            document.getElementById('modalOrderInfo').innerText = `Order: ${order.id} (${order.name})`;
+
+            const washerContainer = document.getElementById('washerPicker');
+            washerContainer.innerHTML = '';
+
+            const washers = db.machines.filter(m => m.type === 'Washer');
+            washers.forEach(w => {
+                const isAvailable = w.status === 'Idle';
+                washerContainer.innerHTML += `
+                    <button class="modal-btn" ${!isAvailable ? 'disabled' : ''} onclick="confirmMachineAssignment('${w.id}')">
+                        ${w.id} ${isAvailable ? '(Free)' : '(Busy)'}
+                    </button>
+                `;
+            });
+
+            document.getElementById('assignModal').classList.add('active');
+        }
+
+        function closeAssignModal() {
+            document.getElementById('assignModal').classList.remove('active');
+            selectedOrderForAssignment = null;
+        }
+
+        function confirmMachineAssignment(machineId) {
+            if (!selectedOrderForAssignment) return;
+
+            const order = db.orders.find(o => o.id === selectedOrderForAssignment);
+            const machine = db.machines.find(m => m.id === machineId);
+
+            if (order && machine) {
+                machine.status = 'In Use';
+                machine.assignedTo = order.id;
+
+                order.machineId = machine.id;
+                order.status = 'Washing'; // Automatically transition to Washing
+
+                // Deduct supplies
+                const weight = order.weight || 1;
+                db.inventory.detergent = Math.max(0, db.inventory.detergent - (weight * 50));
+                db.inventory.softener = Math.max(0, db.inventory.softener - (weight * 30));
+
+                closeAssignModal();
+                saveData();
+            }
+        }
+
+        function sendSMSReminder(phone, name, id, price) {
+            if (!phone) {
+                alert('No phone number entered for this order.');
+                return;
+            }
+            const msg = `Hi ${name}, your laundry (${id}) is ready for pickup! Total balance is ₱${price.toFixed(2)}. Thank you!`;
+            window.open(`sms:${phone}?body=${encodeURIComponent(msg)}`);
+        }
+
+        function handleRestock() {
+            const item = document.getElementById('restockItem').value;
+            const qty = parseFloat(document.getElementById('restockQty').value) || 0;
+            if (qty > 0) {
+                db.inventory[item] = (db.inventory[item] || 0) + qty;
+                document.getElementById('restockQty').value = '';
+                saveData();
+            }
+        }
+
+        function render() {
+            let rev = 0;
+            let activeCount = 0;
+            db.orders.forEach(o => {
+                if (o.status !== 'Completed') activeCount++;
+                if (o.status === 'Completed') rev += o.price;
+            });
+
+            const machinesInUse = db.machines.filter(m => m.status === 'In Use').length;
+
+            document.getElementById('metricRevenue').innerText = `₱${rev.toFixed(2)}`;
+            document.getElementById('metricActive').innerText = activeCount;
+            document.getElementById('metricMachines').innerText = `${machinesInUse} / 8`;
+            document.getElementById('metricDetergent').innerText = `${db.inventory.detergent} ml`;
+
+            // Render Orders
+            const filter = (document.getElementById('searchFilter').value || '').toLowerCase();
+            const orderList = document.getElementById('orderList');
+            orderList.innerHTML = '';
+            
+            const activeOrders = db.orders.filter(o => o.status !== 'Completed');
+            if (activeOrders.length === 0) {
+                orderList.innerHTML = '<p style="text-align:center; color:var(--muted); padding:15px;">No active orders in queue.</p>';
+            } else {
+                activeOrders.filter(o => o.name.toLowerCase().includes(filter) || o.id.toLowerCase().includes(filter)).forEach(o => {
+                    const statusTag = o.status.replace(/\s+/g, '').toLowerCase();
+                    orderList.innerHTML += `
+                        <div class="order-item">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                    <h4><b>${o.id}</b> - ${o.name}</h4>
+                                    <span class="badge badge-${statusTag}">${o.status}</span>
+                                </div>
+                                <p style="font-size:0.75rem; color:var(--muted);">${o.service} (${o.weight}kg) • ₱${o.price.toFixed(2)} ${o.machineId ? '• Machine: ' + o.machineId : ''}</p>
+                                ${o.notes ? '<p style="font-size:0.7rem; color:var(--danger); margin-top:2px;">Note: ' + o.notes + '</p>' : ''}
+                                <div class="action-group">
+                                    ${o.status === 'Pending' ? `<button class="btn-sm btn-primary" onclick="startWashDirectly('${o.id}')">Start Wash</button>` : ''}
+                                    ${o.status === 'Pending' ? `<button class="btn-sm btn-warning" onclick="openAssignModal('${o.id}')">Assign Machine</button>` : ''}
+                                    ${o.status === 'Washing' ? `<button class="btn-sm btn-primary" onclick="moveToDryer('${o.id}')">Move to Dryer</button>` : ''}
+                                    ${o.status === 'Drying' ? `<button class="btn-sm btn-primary" onclick="markReady('${o.id}')">Mark Ready</button>` : ''}
+                                    ${o.status === 'Ready for Pickup' ? `<button class="btn-sm btn-success" onclick="markCompleted('${o.id}')">Complete & Pay</button>` : ''}
+                                    <button class="btn-sm" style="background:#e0f2fe; color:#0369a1;" onclick="sendSMSReminder('${o.phone}', '${o.name}', '${o.id}', ${o.price})">SMS Alert</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Render Machines
+            const machineGrid = document.getElementById('machineGridContainer');
+            machineGrid.innerHTML = '';
+            db.machines.forEach(m => {
+                machineGrid.innerHTML += `
+                    <div class="machine-box ${m.status === 'In Use' ? 'active' : ''}">
+                        <h4 style="font-size:0.9rem;">${m.id} (${m.type})</h4>
+                        <p style="font-size:0.75rem; font-weight:bold; color:${m.status === 'In Use' ? 'var(--primary)' : 'var(--muted)'};">${m.status}</p>
+                        <p style="font-size:0.7rem; color:var(--muted);">${m.assignedTo ? 'Order: ' + m.assignedTo : 'Available'}</p>
+                    </div>
+                `;
+            });
+
+            // Render Inventory
+            const inventoryList = document.getElementById('inventoryList');
+            inventoryList.innerHTML = `
+                <div class="inventory-item"><div style="display:flex; justify-content:space-between;"><b>Liquid Detergent</b> <span>${db.inventory.detergent} ml</span></div></div>
+                <div class="inventory-item"><div style="display:flex; justify-content:space-between;"><b>Fabric Softener</b> <span>${db.inventory.softener} ml</span></div></div>
+                <div class="inventory-item"><div style="display:flex; justify-content:space-between;"><b>Bleach</b> <span>${db.inventory.bleach} ml</span></div></div>
+                <div class="inventory-item"><div style="display:flex; justify-content:space-between;"><b>Large Plastic Bags</b> <span>${db.inventory.bags} pcs</span></div></div>
+            `;
+
+            // Render History
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            const completedOrders = db.orders.filter(o => o.status === 'Completed');
+            if (completedOrders.length === 0) {
+                historyList.innerHTML = '<p style="text-align:center; color:var(--muted); padding:15px;">No completed history yet.</p>';
+            } else {
+                completedOrders.slice(0, 10).forEach(o => {
+                    historyList.innerHTML += `
+                        <div class="order-item">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <h4><b>${o.id}</b> - ${o.name}</h4>
+                                    <p style="font-size:0.75rem; color:var(--muted);">${o.date} • ₱${o.price.toFixed(2)}</p>
+                                </div>
+                                <span class="badge badge-completed">Done</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // Initial Load
+        calculateTotal();
+        render();
+    </script>
+</body>
+</html>
